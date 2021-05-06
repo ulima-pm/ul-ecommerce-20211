@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ULEcommerce</string>
+    <string name="but_login">Login</string>
+    <string name="but_registrar">Signup</string>
+    <string name="login_titulo">UL E-commerce</string>
+    <string name="signup_titulo">Signup</string>
+</resources>

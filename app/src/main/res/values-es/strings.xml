@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ULEcommerce</string>
+    <string name="but_login">Autenticación</string>
+    <string name="but_registrar">Registro</string>
+    <string name="login_titulo">UL Tienda Virtual</string>
+    <string name="signup_titulo">Registro</string>
+</resources>
