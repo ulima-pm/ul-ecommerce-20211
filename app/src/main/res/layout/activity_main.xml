@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
-    <fragment
-        android:id="@+id/fraAccount"
+    <FrameLayout
+        android:id="@+id/flaContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
-        android:name="pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment"
-        tools:layout="@layout/fragment_account"/>
+        android:layout_weight="6" />
     <fragment
         android:id="@+id/fraBottomBar"
         android:layout_width="match_parent"
