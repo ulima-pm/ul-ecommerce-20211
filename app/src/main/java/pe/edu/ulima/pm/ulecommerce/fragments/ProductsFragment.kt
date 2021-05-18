@@ -28,5 +28,4 @@ class ProductsFragment : Fragment(){
             startActivity(intent)
         }
     }
-
 }
