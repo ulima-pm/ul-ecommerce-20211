@@ -4,17 +4,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5"
-        android:text="Fragment Products" />
 
-    <ListView
+
+    <!--<ListView
         android:id="@+id/lviProducts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
+        tools:listitem="@layout/item_products"/> -->
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:app="http://schemas.android.com/apk/res/android"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:orientation="vertical"
+        app:layout_width="match_parent"
+        app:layout_height="0dp"
+        app:layout_weight="6"
         tools:listitem="@layout/item_products"/>
 
     <Button

@@ -6,10 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import org.w3c.dom.Text
 import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.models.Product
 
 class ProductsAdapter :BaseAdapter{
+
+    class ViewHolder {
+        var tviProductName : TextView? = null
+        var tviProductPrice : TextView? = null
+
+        constructor(view : View) {
+            tviProductName = view.findViewById(R.id.tviProductName)
+            tviProductPrice = view.findViewById(R.id.tviProductPrice)
+        }
+    }
 
     private var productList : ArrayList<Product>? = null
     private var inflater : LayoutInflater? = null
@@ -32,13 +43,26 @@ class ProductsAdapter :BaseAdapter{
     }
 
     override fun getView(position: Int, convertView: View?, container: ViewGroup?): View {
+        // Reciclado de vistas
         val product = productList!![position]
 
-        val view = inflater!!.inflate(R.layout.item_products, null)
+        var view : View? = null
+        var viewHolder : ViewHolder? = null
 
-        view.findViewById<TextView>(R.id.tviProductName).setText(product.name)
-        view.findViewById<TextView>(R.id.tviProductPrice).setText(product.price.toString())
+        if (convertView == null) {
+            // Primera vez que se llama este metodo para determinada position
+            view = inflater!!.inflate(R.layout.item_products, null)
+            viewHolder = ViewHolder(view)
+            view.tag = viewHolder
+        }else {
+            view = convertView
+            viewHolder = view.tag as ViewHolder?
+        }
 
-        return view
+
+        viewHolder!!.tviProductName!!.setText(product.name)
+        viewHolder!!.tviProductPrice!!.setText(product.price.toString())
+
+        return view!!
     }
 }
