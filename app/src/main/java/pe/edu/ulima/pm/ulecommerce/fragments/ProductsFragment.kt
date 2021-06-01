@@ -8,15 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import pe.edu.ulima.pm.ulecommerce.ProductsActivity
 import pe.edu.ulima.pm.ulecommerce.R
+import pe.edu.ulima.pm.ulecommerce.adapters.OnProductItemClickListener
 import pe.edu.ulima.pm.ulecommerce.adapters.ProductsAdapter
+import pe.edu.ulima.pm.ulecommerce.adapters.ProductsRVAdapter
+import pe.edu.ulima.pm.ulecommerce.models.Product
 import pe.edu.ulima.pm.ulecommerce.models.ProductsManager
 
-class ProductsFragment : Fragment(){
+class ProductsFragment : Fragment(), OnProductItemClickListener{
 
-    var lviProducts : ListView? = null
+    //var lviProducts : ListView? = null
+    var rviProducts : RecyclerView? = null
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -30,10 +36,12 @@ class ProductsFragment : Fragment(){
 
         val butGoActivityProducts = view!!.findViewById<Button>(R.id.butGoActivityProducts);
 
-        lviProducts = view!!.findViewById(R.id.lviProducts)
+        rviProducts = view!!.findViewById(R.id.rviProducts)
         val productsList = ProductsManager.getInstance().getProducts()
-        val productsAdapter = ProductsAdapter(activity as Context, productsList)
-        lviProducts!!.adapter = productsAdapter
+        //val productsAdapter = ProductsAdapter(activity as Context, productsList)
+        val productsRVAdapter = ProductsRVAdapter(productsList, this)
+        //lviProducts!!.adapter = productsAdapter
+        rviProducts!!.adapter = productsRVAdapter
 
 
         // TODO: Debe mejorarse
@@ -41,5 +49,9 @@ class ProductsFragment : Fragment(){
             val intent = Intent(activity, ProductsActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onClick(product: Product) {
+        Toast.makeText(context, product.name, Toast.LENGTH_LONG).show()
     }
 }

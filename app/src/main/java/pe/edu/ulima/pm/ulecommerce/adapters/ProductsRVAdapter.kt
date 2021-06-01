@@ -3,28 +3,37 @@ package pe.edu.ulima.pm.ulecommerce.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.models.Product
+
+interface OnProductItemClickListener {
+    fun onClick(product : Product)
+}
 
 class ProductsRVAdapter : RecyclerView.Adapter<ProductsRVAdapter.ViewHolder>
 {
     class ViewHolder : RecyclerView.ViewHolder {
         var tviProductName : TextView? = null
         var tviProductPrice : TextView? = null
+        var iviProductImage : ImageView? = null
 
         constructor(view : View) : super(view) {
-
+            iviProductImage = view.findViewById(R.id.iviProductImage)
             tviProductName = view.findViewById(R.id.tviProductName)
             tviProductPrice = view.findViewById(R.id.tviProductPrice)
         }
     }
 
     private var products : ArrayList<Product>? = null
+    private var listener : OnProductItemClickListener? = null
 
-    constructor(products : ArrayList<Product>) : super(){
+    constructor(products : ArrayList<Product>, listener : OnProductItemClickListener) : super(){
         this.products = products
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,6 +47,12 @@ class ProductsRVAdapter : RecyclerView.Adapter<ProductsRVAdapter.ViewHolder>
 
         holder.tviProductName!!.text = product.name
         holder.tviProductPrice!!.text = product.price.toString()
+
+        Picasso.get().load(product.image).into(holder.iviProductImage)
+
+        holder.itemView.setOnClickListener { v : View ->
+            listener!!.onClick(products!![position])
+        }
     }
 
     override fun getItemCount(): Int {
