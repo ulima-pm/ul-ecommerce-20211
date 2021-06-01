@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:text="Fragment Products"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:text="Fragment Products" />
+
+    <ListView
+        android:id="@+id/lviProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        tools:listitem="@layout/item_products"/>
+
     <Button
         android:id="@+id/butGoActivityProducts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Activity Products" />
+        android:layout_height="0dp"
+        android:text="Activity Products"
+        android:layout_weight="1"/>
 
 
 </LinearLayout>
