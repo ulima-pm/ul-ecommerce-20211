@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import pe.edu.ulima.pm.ulecommerce.R
-import pe.edu.ulima.pm.ulecommerce.models.Product
+import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 
 interface OnProductItemClickListener {
     fun onClick(product : Product)

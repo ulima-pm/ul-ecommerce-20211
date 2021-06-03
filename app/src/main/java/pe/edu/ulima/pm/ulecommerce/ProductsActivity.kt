@@ -4,8 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import pe.edu.ulima.pm.ulecommerce.adapters.ProductsSliderAdapter
-import pe.edu.ulima.pm.ulecommerce.models.Product
-import pe.edu.ulima.pm.ulecommerce.models.ProductsManager
+import pe.edu.ulima.pm.ulecommerce.models.managers.ProductsManager
 
 class ProductsActivity : AppCompatActivity(){
     var pager : ViewPager? = null

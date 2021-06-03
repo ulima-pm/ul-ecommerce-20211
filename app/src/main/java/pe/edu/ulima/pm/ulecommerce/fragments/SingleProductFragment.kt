@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import pe.edu.ulima.pm.ulecommerce.R
-import pe.edu.ulima.pm.ulecommerce.models.Product
+import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 
 class SingleProductFragment(val product : Product) : Fragment(){
     override fun onCreateView(inflater: LayoutInflater,

@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import pe.edu.ulima.pm.ulecommerce.fragments.SingleProductFragment
-import pe.edu.ulima.pm.ulecommerce.models.Product
+import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 
 class ProductsSliderAdapter : FragmentStatePagerAdapter {
     var productList : ArrayList<Product>? = null

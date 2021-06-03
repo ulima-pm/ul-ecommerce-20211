@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import org.w3c.dom.Text
 import pe.edu.ulima.pm.ulecommerce.R
-import pe.edu.ulima.pm.ulecommerce.models.Product
+import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 
 class ProductsAdapter :BaseAdapter{
 

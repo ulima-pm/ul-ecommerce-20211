@@ -1,23 +1,20 @@
 package pe.edu.ulima.pm.ulecommerce.fragments
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import pe.edu.ulima.pm.ulecommerce.ProductsActivity
 import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.adapters.OnProductItemClickListener
-import pe.edu.ulima.pm.ulecommerce.adapters.ProductsAdapter
 import pe.edu.ulima.pm.ulecommerce.adapters.ProductsRVAdapter
-import pe.edu.ulima.pm.ulecommerce.models.Product
-import pe.edu.ulima.pm.ulecommerce.models.ProductsManager
+import pe.edu.ulima.pm.ulecommerce.models.beans.Product
+import pe.edu.ulima.pm.ulecommerce.models.managers.ProductsManager
 
 class ProductsFragment : Fragment(), OnProductItemClickListener{
 
