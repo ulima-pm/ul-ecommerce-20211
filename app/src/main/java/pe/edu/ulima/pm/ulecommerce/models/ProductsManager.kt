@@ -18,7 +18,7 @@ class ProductsManager {
     }
 
     private constructor(){
-        productList.add(Product(1, "Iphone 12", 500f,", https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"))
+        productList.add(Product(1, "Iphone 12", 500f,"http://i.blogs.es/adf267/image-2020-10-13-20-20-17/450_1000.jpg"))
         productList.add(Product(2, "Pixel 5", 400f, "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"))
         productList.add(Product(3, "Samsung Galaxy S21", 500f, "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-12-pro-family-hero"))
     }

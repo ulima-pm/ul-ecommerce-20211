@@ -1,12 +1,13 @@
 package pe.edu.ulima.pm.ulecommerce.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.models.Product
 
@@ -30,10 +31,14 @@ class ProductsRVAdapter : RecyclerView.Adapter<ProductsRVAdapter.ViewHolder>
 
     private var products : ArrayList<Product>? = null
     private var listener : OnProductItemClickListener? = null
+    private var context : Context? = null
 
-    constructor(products : ArrayList<Product>, listener : OnProductItemClickListener) : super(){
+    constructor(products : ArrayList<Product>,
+                listener : OnProductItemClickListener,
+                context : Context) : super(){
         this.products = products
         this.listener = listener
+        this.context = context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,7 +53,11 @@ class ProductsRVAdapter : RecyclerView.Adapter<ProductsRVAdapter.ViewHolder>
         holder.tviProductName!!.text = product.name
         holder.tviProductPrice!!.text = product.price.toString()
 
-        Picasso.get().load(product.image).into(holder.iviProductImage)
+        //Picasso.get().load(product.image).into(holder.iviProductImage)
+        Glide.with(context!!).load(product.image!!)
+            .centerCrop()
+            .placeholder(R.mipmap.ic_launcher)
+            .into(holder.iviProductImage!!)
 
         holder.itemView.setOnClickListener { v : View ->
             listener!!.onClick(products!![position])

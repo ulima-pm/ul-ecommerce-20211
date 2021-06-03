@@ -39,7 +39,7 @@ class ProductsFragment : Fragment(), OnProductItemClickListener{
         rviProducts = view!!.findViewById(R.id.rviProducts)
         val productsList = ProductsManager.getInstance().getProducts()
         //val productsAdapter = ProductsAdapter(activity as Context, productsList)
-        val productsRVAdapter = ProductsRVAdapter(productsList, this)
+        val productsRVAdapter = ProductsRVAdapter(productsList, this, activity!!)
         //lviProducts!!.adapter = productsAdapter
         rviProducts!!.adapter = productsRVAdapter
 
