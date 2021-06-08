@@ -2,6 +2,7 @@ package pe.edu.ulima.pm.ulecommerce.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +15,11 @@ import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.adapters.OnProductItemClickListener
 import pe.edu.ulima.pm.ulecommerce.adapters.ProductsRVAdapter
 import pe.edu.ulima.pm.ulecommerce.models.beans.Product
+import pe.edu.ulima.pm.ulecommerce.models.managers.OnGetProductsDone
 import pe.edu.ulima.pm.ulecommerce.models.managers.ProductsManager
+import java.util.ArrayList
 
-class ProductsFragment : Fragment(), OnProductItemClickListener{
+class ProductsFragment : Fragment(), OnProductItemClickListener, OnGetProductsDone {
 
     //var lviProducts : ListView? = null
     var rviProducts : RecyclerView? = null
@@ -34,12 +37,7 @@ class ProductsFragment : Fragment(), OnProductItemClickListener{
         val butGoActivityProducts = view!!.findViewById<Button>(R.id.butGoActivityProducts);
 
         rviProducts = view!!.findViewById(R.id.rviProducts)
-        val productsList = ProductsManager.getInstance().getProducts()
-        //val productsAdapter = ProductsAdapter(activity as Context, productsList)
-        val productsRVAdapter = ProductsRVAdapter(productsList, this, activity!!)
-        //lviProducts!!.adapter = productsAdapter
-        rviProducts!!.adapter = productsRVAdapter
-
+        ProductsManager.getInstance().getProducts(this)
 
         // TODO: Debe mejorarse
         butGoActivityProducts.setOnClickListener { _ : View ->
@@ -50,5 +48,16 @@ class ProductsFragment : Fragment(), OnProductItemClickListener{
 
     override fun onClick(product: Product) {
         Toast.makeText(context, product.name, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onSuccess(products: ArrayList<Product>) {
+        //val productsAdapter = ProductsAdapter(activity as Context, productsList)
+        val productsRVAdapter = ProductsRVAdapter(products, this, activity!!)
+        //lviProducts!!.adapter = productsAdapter
+        rviProducts!!.adapter = productsRVAdapter
+    }
+
+    override fun onError(msg: String) {
+        Log.e("ProductsFragment", msg)
     }
 }

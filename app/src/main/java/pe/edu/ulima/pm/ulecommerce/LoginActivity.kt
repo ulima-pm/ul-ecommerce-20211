@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import pe.edu.ulima.pm.ulecommerce.models.managers.UsersManager
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
@@ -61,16 +62,14 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         val usuario = eteUsuario!!.text.toString() //[LoginActivity : Controller] -> [EditText : View]
         val password = etePassword!!.text.toString()
 
-        if (usuario == "pm" && password == "123") {
-            // Login correcto
+        UsersManager.getInstance().login({ username : String, name : String->
             val intent : Intent = Intent()
             intent.setClass(this, MainActivity::class.java)
-            intent.putExtra("USERNAME", usuario)
+            intent.putExtra("USERNAME", username)
             startActivity(intent)
-
-        }else {
-            // Login incorrecto
+        },{ error : String->
+            Log.e("LoginActivity", error)
             Toast.makeText(this, "Error Login", Toast.LENGTH_SHORT).show()
-        }
+        }, usuario, password)
     }
 }

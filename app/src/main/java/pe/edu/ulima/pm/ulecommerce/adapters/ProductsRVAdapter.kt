@@ -54,7 +54,7 @@ class ProductsRVAdapter : RecyclerView.Adapter<ProductsRVAdapter.ViewHolder>
         holder.tviProductPrice!!.text = product.price.toString()
 
         //Picasso.get().load(product.image).into(holder.iviProductImage)
-        Glide.with(context!!).load(product.image!!)
+        Glide.with(context!!).load(product.url!!)
             .centerCrop()
             .placeholder(R.mipmap.ic_launcher)
             .into(holder.iviProductImage!!)
