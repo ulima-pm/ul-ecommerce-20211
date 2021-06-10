@@ -1,5 +1,6 @@
 package pe.edu.ulima.pm.ulecommerce
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,9 +13,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
 import pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment
 import pe.edu.ulima.pm.ulecommerce.fragments.OnBottomBarMenuSelected
 import pe.edu.ulima.pm.ulecommerce.fragments.ProductsFragment
+import pe.edu.ulima.pm.ulecommerce.models.beans.User
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 import pe.edu.ulima.pm.ulecommerce.views.ULFaceView
 
@@ -27,6 +30,8 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getLastUserSave()
+
         val toolbar = findViewById<Toolbar>(R.id.tbaMain)
         setSupportActionBar(toolbar)
 
@@ -35,7 +40,10 @@ class MainActivity : AppCompatActivity(){
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //Crear fragments
-        username = intent.getStringExtra("USERNAME")
+        //username = intent.getStringExtra("USERNAME")
+        username = getSharedPreferences(
+            "USERS_DATA", Context.MODE_PRIVATE)
+            .getString("USERNAME", null)
 
         val bundle : Bundle = Bundle()
         bundle.putString("USERNAME", username)
@@ -92,5 +100,13 @@ class MainActivity : AppCompatActivity(){
         dlaMain!!.closeDrawers()
     }
 
+    private fun getLastUserSave() : User {
+        var user : User? = null
+        applicationContext.openFileInput("USERS_FILE.json").use {
+            val reader = it.bufferedReader(Charsets.UTF_8)
+            user = Gson().fromJson(reader.readLine(), User::class.java)
 
+        }
+        return user!!
+    }
 }

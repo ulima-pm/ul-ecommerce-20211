@@ -1,6 +1,7 @@
 package pe.edu.ulima.pm.ulecommerce
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,12 +14,17 @@ import pe.edu.ulima.pm.ulecommerce.models.managers.UsersManager
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
-    var eteUsuario : EditText? = null
-    var etePassword : EditText? = null
+    private var eteUsuario : EditText? = null
+    private var etePassword : EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (checkIfLogin()) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
 
         val butLogin : Button = findViewById(R.id.butLogin)
         val butSignup = findViewById<Button>(R.id.butRegistrar)
@@ -65,11 +71,24 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         UsersManager.getInstance().login({ username : String, name : String->
             val intent : Intent = Intent()
             intent.setClass(this, MainActivity::class.java)
-            intent.putExtra("USERNAME", username)
+            //intent.putExtra("USERNAME", username)
+
+            val spEditor = getSharedPreferences("USERS_DATA", Context.MODE_PRIVATE).edit()
+            spEditor.putString("USERNAME", username)
+            spEditor.putString("NAME", name)
+            spEditor.apply()
+
             startActivity(intent)
         },{ error : String->
             Log.e("LoginActivity", error)
             Toast.makeText(this, "Error Login", Toast.LENGTH_SHORT).show()
         }, usuario, password)
+    }
+
+    private fun checkIfLogin() : Boolean{
+        val username = getSharedPreferences("USERS_DATA", Context.MODE_PRIVATE)
+            .getString("USERNAME", null)
+        if (username == null) return false
+        return true
     }
 }

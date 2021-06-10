@@ -1,12 +1,16 @@
 package pe.edu.ulima.pm.ulecommerce
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import com.google.gson.Gson
+import pe.edu.ulima.pm.ulecommerce.models.beans.User
+import java.nio.charset.Charset
 
 class SignupActivity : AppCompatActivity() {
     var eteUser : EditText? = null
@@ -24,6 +28,8 @@ class SignupActivity : AppCompatActivity() {
 
         butSave.setOnClickListener{ _ : View ->
             // TODO: Codigo para grabar un nuevo usuario
+            saveLocalUser()
+
             val intent = Intent()
             intent.putExtra("USERNAME", eteUser!!.text.toString())
             intent.putExtra("PASSWORD", etePassword!!.text.toString())
@@ -36,5 +42,14 @@ class SignupActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun saveLocalUser() {
+        val user = User(eteUser!!.text.toString(), etePassword!!.text.toString())
+        val jsUser = Gson().toJson(user)
+
+        applicationContext.openFileOutput("USERS_FILE.json", Context.MODE_PRIVATE).use {
+            it.write(jsUser.toByteArray(Charset.forName("utf-8")))
+        }
     }
 }
