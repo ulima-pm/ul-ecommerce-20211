@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.room.Room
 import com.google.gson.Gson
 import pe.edu.ulima.pm.ulecommerce.models.beans.User
+import pe.edu.ulima.pm.ulecommerce.models.persistence.AppDatabase
 import java.nio.charset.Charset
 
 class SignupActivity : AppCompatActivity() {
@@ -28,19 +30,42 @@ class SignupActivity : AppCompatActivity() {
 
         butSave.setOnClickListener{ _ : View ->
             // TODO: Codigo para grabar un nuevo usuario
-            saveLocalUser()
+            saveLocalUserRoom()
 
-            val intent = Intent()
-            intent.putExtra("USERNAME", eteUser!!.text.toString())
-            intent.putExtra("PASSWORD", etePassword!!.text.toString())
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+
         }
 
         butCancel.setOnClickListener { _ : View ->
             setResult(Activity.RESULT_CANCELED)
             finish()
         }
+
+    }
+
+    private fun saveLocalUserRoom() {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "ULECOMMERCE_DB"
+        ).build()
+        val userDAO = db.userDAO()
+        val userEntity = pe.edu.ulima.pm.ulecommerce.models.persistence.entities.User(
+            0,
+            "",
+            eteUser!!.text.toString(),
+            etePassword!!.text.toString(),
+        )
+        val hilo = Thread {
+            userDAO.insert(userEntity)
+
+            runOnUiThread {
+                val intent = Intent()
+                intent.putExtra("USERNAME", eteUser!!.text.toString())
+                intent.putExtra("PASSWORD", etePassword!!.text.toString())
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+        }.start()
 
     }
 

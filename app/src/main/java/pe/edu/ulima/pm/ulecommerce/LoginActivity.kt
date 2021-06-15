@@ -4,13 +4,16 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Debug
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import pe.edu.ulima.pm.ulecommerce.models.managers.UsersManager
+import pe.edu.ulima.pm.ulecommerce.models.persistence.AppDatabase
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener{
@@ -42,6 +45,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             val intent = Intent(this, SignupActivity::class.java)
             startActivityForResult(intent, 100)
         }
+
+        displayUsersTest() // Test
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -56,6 +61,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
         } else if (resultCode == Activity.RESULT_CANCELED) {
             // Se cancelo y no se registro un nuevo usuario
         }
+        displayUsersTest() // Test
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -90,5 +96,23 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             .getString("USERNAME", null)
         if (username == null) return false
         return true
+    }
+
+    private fun displayUsersTest() {
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "ULECOMMERCE_DB"
+        ).build()
+        val hilo = Thread {
+
+            val listaUsuarios = db.userDAO().findAll()
+            Log.i("LoginActivity", listaUsuarios.size.toString());
+            listaUsuarios.forEach { user ->
+                Log.i("LoginActivity", user.username)
+            }
+        }
+        hilo.start()
+
     }
 }
