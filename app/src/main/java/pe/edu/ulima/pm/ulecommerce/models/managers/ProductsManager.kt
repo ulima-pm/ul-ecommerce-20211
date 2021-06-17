@@ -1,7 +1,10 @@
 package pe.edu.ulima.pm.ulecommerce.models.managers
 
+import android.content.Context
+import androidx.room.Room
 import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 import pe.edu.ulima.pm.ulecommerce.models.dao.DevicesService
+import pe.edu.ulima.pm.ulecommerce.models.persistence.AppDatabase
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -26,7 +29,7 @@ class ProductsManager {
         }
     }
 
-    fun getProducts(callback : OnGetProductsDone)  {
+    fun getProducts(callback : OnGetProductsDone, context : Context)  {
         val retrofit = ConnectionManager.getInstance().getRetrofit()
 
         val devicesService = retrofit.create<DevicesService>()
@@ -36,7 +39,10 @@ class ProductsManager {
                 response: Response<java.util.ArrayList<Product>>
             ) {
                 if (response.body() != null) {
-                    callback.onSuccess(response.body()!!)
+                    saveProductsRoom(response.body()!!, context, { products : ArrayList<Product> ->
+                        callback.onSuccess(products)
+                    })
+
                 }else {
                     callback.onError("Arraylist nulo")
                 }
@@ -47,6 +53,29 @@ class ProductsManager {
             }
 
         })
+    }
+
+    private fun saveProductsRoom(products: ArrayList<Product>,
+                                 context : Context,
+                                 callback : (products : ArrayList<Product>) -> Unit) {
+        val db = Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            "ULECOMMERCE_DB"
+        ).build()
+
+        Thread {
+            val productDAO = db.productDAO()
+            products.forEach { p : Product ->
+                productDAO.insert(pe.edu.ulima.pm.ulecommerce.models.persistence.entities.Product(
+                    p.id,
+                    p.name,
+                    p.price,
+                    p.url
+                ))
+            }
+            callback(products)
+        }.start()
 
 
     }

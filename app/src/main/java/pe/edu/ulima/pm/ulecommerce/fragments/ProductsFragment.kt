@@ -37,7 +37,7 @@ class ProductsFragment : Fragment(), OnProductItemClickListener, OnGetProductsDo
         val butGoActivityProducts = view!!.findViewById<Button>(R.id.butGoActivityProducts);
 
         rviProducts = view!!.findViewById(R.id.rviProducts)
-        ProductsManager.getInstance().getProducts(this)
+        ProductsManager.getInstance().getProducts(this, context!!)
 
         // TODO: Debe mejorarse
         butGoActivityProducts.setOnClickListener { _ : View ->
