@@ -16,7 +16,7 @@ class ProductsActivity : AppCompatActivity(), OnGetProductsDone{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_products)
 
-        ProductsManager.getInstance().getProducts(this)
+        ProductsManager.getInstance().getProducts(this, this)
 
         pager = findViewById(R.id.pager)
 

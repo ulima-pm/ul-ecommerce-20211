@@ -103,7 +103,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener{
             applicationContext,
             AppDatabase::class.java,
             "ULECOMMERCE_DB"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         val hilo = Thread {
 
             val listaUsuarios = db.userDAO().findAll()

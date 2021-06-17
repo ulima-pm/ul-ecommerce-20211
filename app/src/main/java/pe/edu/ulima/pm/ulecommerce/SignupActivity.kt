@@ -47,7 +47,7 @@ class SignupActivity : AppCompatActivity() {
             applicationContext,
             AppDatabase::class.java,
             "ULECOMMERCE_DB"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
         val userDAO = db.userDAO()
         val userEntity = pe.edu.ulima.pm.ulecommerce.models.persistence.entities.User(
             0,
