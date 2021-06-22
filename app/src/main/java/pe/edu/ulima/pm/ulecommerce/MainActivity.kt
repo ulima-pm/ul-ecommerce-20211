@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getLastUserSave()
+        //getLastUserSave()
 
         val toolbar = findViewById<Toolbar>(R.id.tbaMain)
         setSupportActionBar(toolbar)
