@@ -51,10 +51,13 @@ class ProductsFragment : Fragment(), OnProductItemClickListener, OnGetProductsDo
     }
 
     override fun onSuccess(products: ArrayList<Product>) {
-        //val productsAdapter = ProductsAdapter(activity as Context, productsList)
-        val productsRVAdapter = ProductsRVAdapter(products, this, activity!!)
-        //lviProducts!!.adapter = productsAdapter
-        rviProducts!!.adapter = productsRVAdapter
+        activity!!.runOnUiThread {
+            //val productsAdapter = ProductsAdapter(activity as Context, productsList)
+            val productsRVAdapter = ProductsRVAdapter(products, this, activity!!)
+            //lviProducts!!.adapter = productsAdapter
+            rviProducts!!.adapter = productsRVAdapter
+        }
+
     }
 
     override fun onError(msg: String) {
