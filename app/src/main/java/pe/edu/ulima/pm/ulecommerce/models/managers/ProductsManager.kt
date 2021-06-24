@@ -30,7 +30,19 @@ class ProductsManager {
     }
 
     fun getProducts(callback : OnGetProductsDone, context : Context)  {
+        val productDAO = FirebaseManager.getInstance().getProductDAO()
+        productDAO.getProducts({
+            callback.onSuccess(it as ArrayList<Product>)
+        })
 
+        //if (isFirstTimeGetProducts((context))) {
+        //}
+
+
+
+    }
+
+    private fun getProductsRetrofit(callback : OnGetProductsDone, context : Context) {
         if (isFirstTimeGetProducts(context)) {
             val retrofit = ConnectionManager.getInstance().getRetrofit()
 
@@ -64,8 +76,6 @@ class ProductsManager {
                 callback.onSuccess(products)
             })
         }
-
-
     }
 
     private fun getProductsRoom(context: Context, callback: (ArrayList<Product>) -> Unit) {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "143963368260",
+    "project_id": "pmecommerce20211",
+    "storage_bucket": "pmecommerce20211.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143963368260:android:187228536c25616434c511",
+        "android_client_info": {
+          "package_name": "pe.edu.ulima.pm.ulecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143963368260-uee1mgr7q52v5o2eebfg0sl3khg6hsst.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANmUKkMfmo1E3YPR_gq3bL8RKOVDx1gsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143963368260-uee1mgr7q52v5o2eebfg0sl3khg6hsst.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
