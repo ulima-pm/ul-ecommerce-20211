@@ -6,7 +6,6 @@ import pe.edu.ulima.pm.ulecommerce.models.beans.Product
 import pe.edu.ulima.pm.ulecommerce.models.dao.DevicesService
 import pe.edu.ulima.pm.ulecommerce.models.persistence.AppDatabase
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 interface OnGetProductsDone {
     fun onSuccess(products : java.util.ArrayList<Product>)
@@ -37,9 +36,13 @@ class ProductsManager {
 
         //if (isFirstTimeGetProducts((context))) {
         //}
+    }
 
-
-
+    fun saveProduct(name: String, price: Float, callback: () -> Unit) {
+        val productDAO = FirebaseManager.getInstance().getProductDAO()
+        productDAO.addProduct(name, price) {
+            callback()
+        }
     }
 
     private fun getProductsRetrofit(callback : OnGetProductsDone, context : Context) {
