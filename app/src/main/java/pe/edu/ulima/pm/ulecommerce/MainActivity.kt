@@ -13,8 +13,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.navigation.NavigationView
-import com.google.gson.Gson
+import com.google.gson.*
 import pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment
+import pe.edu.ulima.pm.ulecommerce.fragments.AddProductFragment
 import pe.edu.ulima.pm.ulecommerce.fragments.OnBottomBarMenuSelected
 import pe.edu.ulima.pm.ulecommerce.fragments.ProductsFragment
 import pe.edu.ulima.pm.ulecommerce.models.beans.User
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(){
 
         fragments.add(AccountFragment())
         fragments.add(ProductsFragment())
+        fragments.add(AddProductFragment())
 
         fragments[0].arguments = bundle // Seteamos parametros a AccountFragment
 
@@ -91,6 +93,12 @@ class MainActivity : AppCompatActivity(){
             dlaMain!!.openDrawer(GravityCompat.START)
         }else if (item.itemId == R.id.mnuProductsActivity) {
             startActivity(Intent(this, ProductsActivity::class.java))
+        }else if (item.itemId == R.id.mnuAddProduct) {
+            // Cargamos el fragment AddProduct
+            val ft = supportFragmentManager.beginTransaction()
+            ft.replace(R.id.flaContent, fragments[2])
+            ft.addToBackStack(null)
+            ft.commit()
         }
         return super.onOptionsItemSelected(item)
     }

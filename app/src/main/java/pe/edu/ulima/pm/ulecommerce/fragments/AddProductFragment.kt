@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import pe.edu.ulima.pm.ulecommerce.R
 import pe.edu.ulima.pm.ulecommerce.models.managers.ProductsManager
@@ -39,7 +40,7 @@ class AddProductFragment : Fragment() {
                 nombreProducto,
                 precioProducto.toFloat()
             ) {
-                Log.i("AddProductFragment", "Se guardo correctamente");
+                Toast.makeText(activity, "Se agregó correctamente", Toast.LENGTH_SHORT).show()
             }
         }
     }

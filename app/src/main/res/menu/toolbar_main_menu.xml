@@ -5,5 +5,9 @@
         android:icon="@mipmap/ic_launcher"
         android:title="Products"
         app:showAsAction="never"/>
+    <item android:id="@+id/mnuAddProduct"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Add"
+        app:showAsAction="ifRoom"/>
 
 </menu>
