@@ -1,17 +1,24 @@
 package pe.edu.ulima.pm.ulecommerce
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.*
 import pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment
@@ -26,10 +33,15 @@ class MainActivity : AppCompatActivity(){
     var username : String? = null
     var dlaMain : DrawerLayout? = null
     var fragments : ArrayList<Fragment> = ArrayList()
+    lateinit var fusedLocationProviderClient : FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        fusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(this)
+
+        obtenerPermisosLocalizacion()
 
         //getLastUserSave()
 
@@ -117,4 +129,53 @@ class MainActivity : AppCompatActivity(){
         }
         return user!!
     }
+
+    fun obtenerPermisosLocalizacion()  {
+        val permission = ContextCompat.checkSelfPermission(this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION)
+
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            // Caso que ya se tenian los permisos habilitados
+            obtenerUltimaLocalizacion()
+        } else {
+            // No hay permisos habilitados
+            val permissionWin = ActivityCompat.shouldShowRequestPermissionRationale(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+            if (permissionWin) {
+                Toast.makeText(this, "Debe habilitar sus permisos", Toast.LENGTH_LONG).show()
+            }else {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    100
+                )
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun obtenerUltimaLocalizacion() {
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            Log.i("MainActivity", "${it.latitude} , ${it.longitude}")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 100) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                obtenerUltimaLocalizacion()
+            }else {
+                // Caso que no me dan permiso
+                finish()
+            }
+
+        }
+    }
+
 }
