@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -17,8 +18,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.*
 import pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment
@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(){
     var dlaMain : DrawerLayout? = null
     var fragments : ArrayList<Fragment> = ArrayList()
     lateinit var fusedLocationProviderClient : FusedLocationProviderClient
+    lateinit var locationCallback : LocationCallback
+    var esPrimeraVezLocalizacion = true;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +122,21 @@ class MainActivity : AppCompatActivity(){
         dlaMain!!.closeDrawers()
     }
 
+    override fun onPause() {
+        super.onPause()
+        pararLocalizacion()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!esPrimeraVezLocalizacion) {
+            obtenerLocalizacionActual()
+        }else {
+            esPrimeraVezLocalizacion = false
+        }
+
+    }
+
     private fun getLastUserSave() : User {
         var user : User? = null
         applicationContext.openFileInput("USERS_FILE.json").use {
@@ -158,6 +175,7 @@ class MainActivity : AppCompatActivity(){
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             Log.i("MainActivity", "${it.latitude} , ${it.longitude}")
         }
+        obtenerLocalizacionActual()
     }
 
     override fun onRequestPermissionsResult(
@@ -178,4 +196,30 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
+    fun createLocationRequest() : LocationRequest {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 10000
+        return locationRequest
+    }
+
+    @SuppressLint("MissingPermission")
+    fun obtenerLocalizacionActual() {
+        val locationRequest = createLocationRequest()
+
+        // Implementando clase abstracta LocationCallback
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(lr: LocationResult) {
+                for (location in lr.locations) {
+                    Log.i("MainActivity", "${location.latitude} , ${location.longitude}");
+                }
+            }
+        }
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+
+    fun pararLocalizacion() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
 }

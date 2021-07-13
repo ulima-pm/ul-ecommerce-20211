@@ -16,9 +16,18 @@
         android:hint="Ingrese precio de producto"/>
 
     <Button
+        android:id="@+id/butTomarFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Foto"/>
+    <Button
         android:id="@+id/butGuardarProducto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Guardar"/>
+    <ImageView
+        android:id="@+id/iviFotoProducto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
