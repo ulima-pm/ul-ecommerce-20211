@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
@@ -28,6 +29,10 @@ import pe.edu.ulima.pm.ulecommerce.fragments.*
 import pe.edu.ulima.pm.ulecommerce.models.beans.User
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 import pe.edu.ulima.pm.ulecommerce.views.ULFaceView
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), TomarFotoListener{
     var username : String? = null
@@ -257,5 +262,15 @@ class MainActivity : AppCompatActivity(), TomarFotoListener{
             }
 
         }
+    }
+
+    fun crearArchivoImagen() : File {
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFilename = "JPEG_${timestamp}"
+        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val imageFile = File.createTempFile(imageFilename, ".jpg", storageDir)
+
+        return imageFile
+
     }
 }

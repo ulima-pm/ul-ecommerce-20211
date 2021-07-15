@@ -31,6 +31,17 @@
         <activity android:name=".MainActivity"
             android:exported="true"/>
         <activity android:name=".ProductsActivity"/>
+
+        <provider
+            android:authorities="pe.edu.ulima.pm.ulecommerce.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
     </application>
 
 </manifest>
