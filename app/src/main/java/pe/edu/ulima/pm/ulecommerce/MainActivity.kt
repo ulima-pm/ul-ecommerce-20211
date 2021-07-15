@@ -1,11 +1,14 @@
 package pe.edu.ulima.pm.ulecommerce
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -21,15 +24,12 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.location.*
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.*
-import pe.edu.ulima.pm.ulecommerce.fragments.AccountFragment
-import pe.edu.ulima.pm.ulecommerce.fragments.AddProductFragment
-import pe.edu.ulima.pm.ulecommerce.fragments.OnBottomBarMenuSelected
-import pe.edu.ulima.pm.ulecommerce.fragments.ProductsFragment
+import pe.edu.ulima.pm.ulecommerce.fragments.*
 import pe.edu.ulima.pm.ulecommerce.models.beans.User
 import pe.edu.ulima.pm.ulecommerce.views.OnFaceClickListener
 import pe.edu.ulima.pm.ulecommerce.views.ULFaceView
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity(), TomarFotoListener{
     var username : String? = null
     var dlaMain : DrawerLayout? = null
     var fragments : ArrayList<Fragment> = ArrayList()
@@ -137,6 +137,16 @@ class MainActivity : AppCompatActivity(){
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
+            // Regresamos de tomar la foto
+            val bitmap : Bitmap = data!!.extras!!["data"] as Bitmap
+            val fragmentAddProduct = fragments[2] as AddProductFragment
+            fragmentAddProduct.cambiarImageView(bitmap)
+        }
+    }
+
     private fun getLastUserSave() : User {
         var user : User? = null
         applicationContext.openFileInput("USERS_FILE.json").use {
@@ -193,6 +203,14 @@ class MainActivity : AppCompatActivity(){
                 finish()
             }
 
+        }else if (requestCode == 200) {
+            // Permisos de Camara
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(intent, 1000)
+            }else {
+                Log.e("MainActivity", "No dieron los permisos");
+                finish();
+            }
         }
     }
 
@@ -221,5 +239,20 @@ class MainActivity : AppCompatActivity(){
 
     fun pararLocalizacion() {
         fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun tomarFoto() {
+
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (intent.resolveActivity(packageManager) != null) {
+            if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(intent, 1000)
+            }else {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(android.Manifest.permission.CAMERA), 200)
+            }
+
+        }
     }
 }
