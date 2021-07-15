@@ -43,6 +43,15 @@ class MainActivity : AppCompatActivity(), TomarFotoListener{
 
         fusedLocationProviderClient =LocationServices.getFusedLocationProviderClient(this)
 
+        // Implementando clase abstracta LocationCallback
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(lr: LocationResult) {
+                for (location in lr.locations) {
+                    Log.i("MainActivity", "${location.latitude} , ${location.longitude}");
+                }
+            }
+        }
+
         obtenerPermisosLocalizacion()
 
         //getLastUserSave()
@@ -124,7 +133,10 @@ class MainActivity : AppCompatActivity(), TomarFotoListener{
 
     override fun onPause() {
         super.onPause()
-        pararLocalizacion()
+        if (!esPrimeraVezLocalizacion) {
+            pararLocalizacion()
+        }
+
     }
 
     override fun onResume() {
@@ -224,15 +236,6 @@ class MainActivity : AppCompatActivity(), TomarFotoListener{
     @SuppressLint("MissingPermission")
     fun obtenerLocalizacionActual() {
         val locationRequest = createLocationRequest()
-
-        // Implementando clase abstracta LocationCallback
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(lr: LocationResult) {
-                for (location in lr.locations) {
-                    Log.i("MainActivity", "${location.latitude} , ${location.longitude}");
-                }
-            }
-        }
 
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null)
     }
